@@ -11,6 +11,8 @@ type UserInfoService struct {
 	pb.UnimplementedUserInfoServer
 
 	bizHandler *biz.UserBizHandler
+
+	IpAddr string
 }
 
 func NewUserInfoService(h *biz.UserBizHandler) *UserInfoService {
@@ -30,6 +32,6 @@ func (s *UserInfoService) GetUserInfo(ctx context.Context, req *pb.GetUserInfoRe
 		Email:  user.Email,
 		Visits: user.Visits,
 	}
-	resp := pb.GetUserInfoReply{User: &pbUser}
+	resp := pb.GetUserInfoReply{User: &pbUser, IpAddr: s.IpAddr}
 	return &resp, nil
 }

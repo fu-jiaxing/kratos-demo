@@ -42,6 +42,8 @@ components:
             properties:
                 user:
                     $ref: '#/components/schemas/User'
+                ipAddr:
+                    type: string
         GoogleProtobufAny:
             type: object
             properties:

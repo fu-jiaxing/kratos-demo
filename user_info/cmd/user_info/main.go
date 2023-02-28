@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"github.com/go-kratos/kratos/contrib/registry/consul/v2"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/config"
 	"github.com/go-kratos/kratos/v2/config/file"
@@ -9,6 +10,7 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
+	consul_api "github.com/hashicorp/consul/api"
 	"os"
 	"user_info/conf"
 )
@@ -26,7 +28,7 @@ func init() {
 	flag.StringVar(&flagconf, "conf", "../../configs", "config path, eg: -conf config.yaml")
 }
 
-func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server) *kratos.App {
+func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server, client *consul_api.Client) *kratos.App {
 	return kratos.New(
 		kratos.ID(id),
 		kratos.Name(Name),
@@ -34,6 +36,7 @@ func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server) *kratos.App {
 		kratos.Metadata(map[string]string{}),
 		kratos.Server(gs, hs),
 		kratos.Logger(logger),
+		kratos.Registrar(consul.New(client)),
 	)
 }
 
@@ -59,8 +62,9 @@ func main() {
 	if err := c.Scan(&bc); err != nil {
 		panic(err)
 	}
-
-	app, cleanup, err := WireApp(bc.GetServer(), bc.Data, logger)
+	client, err := consul_api.NewClient(consul_api.DefaultConfig())
+	id = id + bc.GetServer().GetGrpc().Addr
+	app, cleanup, err := WireApp(bc.GetServer(), bc.Data, logger, client)
 
 	if err != nil {
 		panic(err)

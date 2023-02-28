@@ -34,7 +34,6 @@ message GetUserInfoRequest {
 }
 message GetUserInfoReply {
 	User user = 1;
-	string ipAddr = 2;
 }
 
 message User {

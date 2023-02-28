@@ -21,6 +21,7 @@ func NewGRPCServer(c *conf.Server, service *service.UserInfoService, logger log.
 	}
 	if c.Grpc.Addr != "" {
 		opts = append(opts, grpc.Address(c.Grpc.Addr))
+		service.IpAddr = c.Grpc.Addr
 	}
 	if c.Grpc.Timeout != nil {
 		opts = append(opts, grpc.Timeout(c.Grpc.Timeout.AsDuration()))
