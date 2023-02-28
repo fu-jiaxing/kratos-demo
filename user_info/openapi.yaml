@@ -78,5 +78,8 @@ components:
                     type: string
                 email:
                     type: string
+                visits:
+                    type: integer
+                    format: int64
 tags:
     - name: UserInfo

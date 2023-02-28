@@ -41,6 +41,8 @@ message User {
 	string name = 2;
 	string ip = 3;
 	string email = 4;
+
+	int64 visits = 5;
 }
 //message ListUserInfoRequest {}
 //message ListUserInfoReply {}

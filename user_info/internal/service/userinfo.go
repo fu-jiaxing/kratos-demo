@@ -25,10 +25,10 @@ func (s *UserInfoService) GetUserInfo(ctx context.Context, req *pb.GetUserInfoRe
 		return nil, err
 	}
 	pbUser := pb.User{
-		UserID: user.UserID,
-		Name:   "",
-		Ip:     "",
-		Email:  "",
+		UserID: req.UserID,
+		Name:   user.Name,
+		Email:  user.Email,
+		Visits: user.Visits,
 	}
 	resp := pb.GetUserInfoReply{User: &pbUser}
 	return &resp, nil
