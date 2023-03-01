@@ -12,7 +12,6 @@ type UserBizHandler struct {
 	redisRepo *data.RedisRepo
 }
 
-
 func NewUserBizHandler(repo data.UserRepo, redisRepo *data.RedisRepo) *UserBizHandler {
 	return &UserBizHandler{repo: repo, redisRepo: redisRepo}
 }
